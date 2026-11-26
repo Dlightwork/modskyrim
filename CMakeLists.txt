@@ -7,9 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(FetchContent)
 
 FetchContent_Declare(
-    minhook
-    GIT_REPOSITORY https://github.com/TsudaKageyu/minhook.git
-    GIT_TAG        v1.3.4
+    imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG        v1.91.5
     GIT_SHALLOW    TRUE
 )
 FetchContent_MakeAvailable(imgui)
@@ -44,6 +44,16 @@ target_include_directories(imgui_static PUBLIC
 )
 target_link_libraries(imgui_static PUBLIC d3d11 dxgi)
 
+add_library(minhook_static STATIC
+    ${minhook_SOURCE_DIR}/src/buffer.c
+    ${minhook_SOURCE_DIR}/src/hook.c
+    ${minhook_SOURCE_DIR}/src/trampoline.c
+    ${minhook_SOURCE_DIR}/src/hde/hde64.c
+)
+target_include_directories(minhook_static PUBLIC
+    ${minhook_SOURCE_DIR}/include
+)
+
 add_library(TavernGamesVisual SHARED
     src/skse_min.h
     src/assets.h
@@ -62,7 +72,7 @@ target_include_directories(TavernGamesVisual PRIVATE
 
 target_link_libraries(TavernGamesVisual PRIVATE
     imgui_static
-    minhook
+    minhook_static
     d3d11
     dxgi
     dinput8
@@ -84,7 +94,7 @@ if (MSVC)
     )
     set_property(TARGET TavernGamesVisual PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     set_property(TARGET imgui_static PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-    set_property(TARGET minhook PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    set_property(TARGET minhook_static PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 
 set_target_properties(TavernGamesVisual PROPERTIES
