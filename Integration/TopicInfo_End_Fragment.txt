@@ -1,0 +1,6 @@
+; Paste this into the END fragment of the Topic Info in Creation Kit.
+; It closes the dialogue menu, waits briefly, and then opens the games lobby.
+
+UI.InvokeString("HUD Menu", "_global.skse.CloseMenu", "Dialogue Menu")
+Utility.Wait(0.35)
+TavernGamesNative.OpenGames()
