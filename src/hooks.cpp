@@ -130,7 +130,7 @@ namespace tg
                     case WM_INPUT:
                         return 0;
                     case WM_SETCURSOR:
-                        SetCursor(LoadCursorW(nullptr, IDC_ARROW));
+                        SetCursor(LoadCursor(nullptr, IDC_ARROW));
                         return TRUE;
                     default:
                         break;
